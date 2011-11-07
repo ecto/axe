@@ -12,17 +12,18 @@
 var axe = require('axe');
 
 axe.configure({
-  bolt: true
+  mesh: true,
+  autobalance: true,
 });
 
-axe.master(function(node){
+axe.master(function(node, mesh){
   setInterval(function(){
-    node.emit('ping');
+    mesh.emit('ping');
   });
 });
 
-axe.worker(function(node){
-  node.on('ping', function(){
+axe.worker(function(node, mesh){
+  mesh.on('ping', function(){
     console.log(node.id + ' ' + pong);
   });
 });
@@ -34,4 +35,12 @@ axe.start(function(){
 axe.on('error', function(e){
   console.log(e);
 });
+````
+
+````javascript
+var axe = require('axe');
+
+axe.configure(require('config/axe.js'));
+axe.master(require('master/main.js'));
+axe.master(require('worker/main.js'));
 ````
