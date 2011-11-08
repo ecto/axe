@@ -32,13 +32,11 @@ axe.worker(function(node, mesh){
   });
 });
 
-axe.start(function(){
+axe.on('start', function(){
   console.log('axe started on port ' + this.port);
 });
 
-axe.on('error', function(e){
-  console.log(e);
-});
+axe.start();
 ````
 
 ````javascript
@@ -47,4 +45,5 @@ var axe = require('axe');
 axe.configure(require('config/axe.js'));
 axe.master(require('master/main.js'));
 axe.master(require('worker/main.js'));
+axe.start();
 ````
