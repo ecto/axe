@@ -1,7 +1,5 @@
 # axe
 
-SHOW YOUR CLUSTER WHO'S BOSS
-
 ![axe](http://i.imgur.com/ONr16.png)
 
 # install
@@ -39,7 +37,6 @@ axe.start();
 
 ````javascript
 var axe = require('axe');
-
 axe.configure(require('config/axe.js'));
 axe.master(require('master/main.js'));
 axe.worker(require('worker/main.js'));
