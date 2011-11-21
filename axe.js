@@ -8,15 +8,15 @@ var cluster = require('cluster'),
     util = require('util');
 
 var axe = new events.EventEmitter();
-    
+
 axe._ = {};
+axe.auto = true;
 
 axe.configure = function () {
 
 }
 
 axe.master = function (cb) {
-  // TODO fall back to worker.
   if (!cb || typeof cb != 'function') {
     throw Error('Must provide master function.');
   } else {
@@ -34,9 +34,22 @@ axe.worker = function (cb) {
 }
 
 axe.start = function () {
-  if (cluster.isMaster) {
+  if (!cluster.isMaster) {
+    if (!axe._.worker) {
+      throw Error('Must provide worker function.');
+    }
+    axe._.worker();
+  } else {
+    var cpus = require('os').cpus(),
+        numberOfWorkers;
 
-    for (var i = 0; i < 2; i++) {
+    if (!axe._.master) {
+      numberOfWorkers = cpus.length;
+    } else {
+      numberOfWorkers = cpus.length - 1;
+    }
+
+    for (var i = 0; i < numberOfWorkers; i++) {
       var worker = cluster.fork();
       worker.on('message', function (msg) {
         axe.emit('message', msg);
@@ -50,22 +63,10 @@ axe.start = function () {
       });
     }
 
-    if (axe._.master) {
-      axe._.master();
-    }
+    if (axe._.master) axe._.master();
 
     axe.emit('start');
-
-  } else {
-
-    if (!axe._.worker) {
-      throw Error('Must provide worker function.');
-    }
-
-    axe._.worker();
-
   }
-
 }
 
 module.exports = axe;
