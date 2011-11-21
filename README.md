@@ -8,8 +8,6 @@ SHOW YOUR CLUSTER WHO'S BOSS
 
     npm install axe
 
-    not yet
-
 # usage
 
 ````javascript
