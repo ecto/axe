@@ -2,7 +2,7 @@
   "author": "Cam Pedersen <diffference@gmail.com> (http://campedersen.com/)",
   "name": "axe",
   "description": "Express-like API for dealing with native clusters in Node >= .6",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/ecto/axe.git"
@@ -11,6 +11,8 @@
   "engines": {
     "node": "~0.6.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "colors": "*"
+  },
   "devDependencies": {}
 }
