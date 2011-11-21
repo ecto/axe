@@ -17,6 +17,12 @@ axe.log = function (msg) {
   console.log('axe '.magenta + 'info '.green + msg);
 }
 
+axe.configure = function (options) {
+  for (var i in options) {
+    axe.options[i] = options[i];
+  }
+}
+
 axe.master = function (cb) {
   if (!cb || typeof cb != 'function') {
     throw Error('Must provide master function.');
