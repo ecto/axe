@@ -4,16 +4,17 @@
  */
 
 var cluster = require('cluster'),
-    events = require('events'),
-    util = require('util');
+    events  = require('events'),
+    colors  = require('colors');
 
 var axe = new events.EventEmitter();
 
 axe._ = {};
+axe.options = {};
 axe.auto = true;
 
-axe.configure = function () {
-
+axe.log = function (msg) {
+  console.log('axe '.magenta + 'info '.green + msg);
 }
 
 axe.master = function (cb) {
@@ -25,7 +26,6 @@ axe.master = function (cb) {
 }
 
 axe.worker = function (cb) {
-  // Kill the program if there is no worker
   if (!cb || typeof cb != 'function') {
     throw Error('Must provide worker function.');
   } else {
@@ -35,9 +35,7 @@ axe.worker = function (cb) {
 
 axe.start = function () {
   if (!cluster.isMaster) {
-    if (!axe._.worker) {
-      throw Error('Must provide worker function.');
-    }
+    if (!axe._.worker) throw Error('Must provide worker function.');
     axe._.worker();
   } else {
     var cpus = require('os').cpus(),
@@ -49,6 +47,8 @@ axe.start = function () {
       numberOfWorkers = cpus.length - 1;
     }
 
+    axe.log('starting ' + numberOfWorkers + ' workers');
+
     for (var i = 0; i < numberOfWorkers; i++) {
       var worker = cluster.fork();
       worker.on('message', function (msg) {
@@ -58,7 +58,7 @@ axe.start = function () {
 
     if (axe.auto) {
       cluster.on('death', function (worker) {
-        console.log('worker ' + worker.pid + ' died. restart...');
+        axe.log('worker ' + worker.pid + ' died. restarting.');
         cluster.fork();
       });
     }
