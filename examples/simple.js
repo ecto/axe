@@ -1,4 +1,3 @@
-
 var axe = require('../');
 
 axe.master(function(){
