@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/ecto/axe.png)](http://travis-ci.org/ecto/axe)
 # axe
 
 ![axe](http://i.imgur.com/ONr16.png)
